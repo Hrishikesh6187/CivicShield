@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import IncidentCard from './IncidentCard';
 
-const categories = ['All', 'Cybersecurity', 'Physical Safety', 'Digital Wellness', 'Information Leak'];
+const categories = ['All', 'Phishing', 'Network Security', 'Scam', 'Data Breach'];
 const severities = ['All', 'High', 'Medium', 'Low'];
+const statuses = ['All', 'active', 'investigating', 'resolved'];
 
 export default function IncidentFeed() {
     const [incidents, setIncidents] = useState([]);
@@ -12,6 +13,7 @@ export default function IncidentFeed() {
     const [searchQuery, setSearchQuery] = useState('');
     const [filterCategory, setFilterCategory] = useState('All');
     const [filterSeverity, setFilterSeverity] = useState('All');
+    const [filterStatus, setFilterStatus] = useState('All');
 
     const fetchIncidents = async () => {
         setLoading(true);
@@ -42,8 +44,9 @@ export default function IncidentFeed() {
 
         const matchesCategory = filterCategory === 'All' || incident.category === filterCategory;
         const matchesSeverity = filterSeverity === 'All' || incident.severity === filterSeverity;
+        const matchesStatus = filterStatus === 'All' || incident.status === filterStatus;
 
-        return matchesSearch && matchesCategory && matchesSeverity;
+        return matchesSearch && matchesCategory && matchesSeverity && matchesStatus;
     });
 
     return (
@@ -67,12 +70,12 @@ export default function IncidentFeed() {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:w-1/3">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:w-1/2">
                         <div className="space-y-3">
                             <label htmlFor="category" className="text-sm font-bold text-slate-500 uppercase tracking-widest pl-1">Category</label>
                             <select
                                 id="category"
-                                className="w-full bg-slate-50 border-2 border-slate-100 text-slate-800 px-4 py-4 rounded-2xl focus:ring-4 focus:ring-slate-200/50 focus:border-slate-300 outline-none transition-all text-lg font-medium cursor-pointer"
+                                className="w-full bg-slate-50 border-2 border-slate-100 text-slate-800 px-4 py-4 rounded-2xl focus:ring-4 focus:ring-slate-200/50 focus:border-slate-300 outline-none transition-all text-sm font-bold cursor-pointer"
                                 value={filterCategory}
                                 onChange={(e) => setFilterCategory(e.target.value)}
                             >
@@ -83,11 +86,22 @@ export default function IncidentFeed() {
                             <label htmlFor="severity" className="text-sm font-bold text-slate-500 uppercase tracking-widest pl-1">Severity</label>
                             <select
                                 id="severity"
-                                className="w-full bg-slate-50 border-2 border-slate-100 text-slate-800 px-4 py-4 rounded-2xl focus:ring-4 focus:ring-slate-200/50 focus:border-slate-300 outline-none transition-all text-lg font-medium cursor-pointer"
+                                className="w-full bg-slate-50 border-2 border-slate-100 text-slate-800 px-4 py-4 rounded-2xl focus:ring-4 focus:ring-slate-200/50 focus:border-slate-300 outline-none transition-all text-sm font-bold cursor-pointer"
                                 value={filterSeverity}
                                 onChange={(e) => setFilterSeverity(e.target.value)}
                             >
                                 {severities.map(sev => <option key={sev} value={sev}>{sev}</option>)}
+                            </select>
+                        </div>
+                        <div className="space-y-3">
+                            <label htmlFor="status" className="text-sm font-bold text-slate-500 uppercase tracking-widest pl-1">Status</label>
+                            <select
+                                id="status"
+                                className="w-full bg-slate-50 border-2 border-slate-100 text-slate-800 px-4 py-4 rounded-2xl focus:ring-4 focus:ring-slate-200/50 focus:border-slate-300 outline-none transition-all text-sm font-bold cursor-pointer capitalize"
+                                value={filterStatus}
+                                onChange={(e) => setFilterStatus(e.target.value)}
+                            >
+                                {statuses.map(st => <option key={st} value={st}>{st}</option>)}
                             </select>
                         </div>
                     </div>
@@ -114,7 +128,7 @@ export default function IncidentFeed() {
                 <div className="text-center py-24 bg-white border-2 border-dashed border-slate-200 rounded-[3rem] shadow-inner">
                     <div className="text-6xl mb-6">🌟</div>
                     <h3 className="text-2xl font-black text-slate-800 mb-2">No incidents found.</h3>
-                    <p className="text-slate-500 text-xl font-medium">Your community is safe!</p>
+                    <p className="text-slate-500 text-xl font-medium">Try adjusting your filters or search terms.</p>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">

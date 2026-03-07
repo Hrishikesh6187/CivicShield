@@ -16,6 +16,7 @@ export default function SubmitIncident({ onSuccess }) {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
         setSuccess(false);
+        setError(null);
     };
 
     const handleBlur = (e) => {
@@ -26,7 +27,7 @@ export default function SubmitIncident({ onSuccess }) {
     const validate = () => {
         const errors = {};
         if (!formData.title) errors.title = 'Please provide a clear title for the incident.';
-        if (!formData.location) errors.location = 'Please tell us where this happened or on what platform.';
+        if (!formData.location) errors.location = 'Please tell us where this happened.';
         if (!formData.raw_text) errors.raw_text = 'Please describe the incident so we can help.';
         return errors;
     };
@@ -42,46 +43,53 @@ export default function SubmitIncident({ onSuccess }) {
         if (Object.keys(validationErrors).length > 0) {
             setTouched({ title: true, raw_text: true, location: true });
             setError('Please fill in all requested fields correctly.');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
         }
 
         setIsSubmitting(true);
 
         try {
+            // 1. Call Netlify Function for AI Analysis
             const response = await fetch('/.netlify/functions/analyze-incident', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify(formData),
             });
 
             if (!response.ok) {
-                throw new Error('Our analysis engine is currently busy. Please try again in a few minutes.');
+                throw new Error('Analysis failed');
             }
 
             const analysis = await response.json();
 
+            // 2. Save enriched data to Supabase
             const { error: dbError } = await supabase
                 .from('incidents')
-                .insert([{
-                    ...formData,
-                    ...analysis,
-                    status: 'New',
-                }]);
+                .insert([
+                    {
+                        ...formData,
+                        ...analysis,
+                        status: 'active', // Set initial status to active
+                    },
+                ]);
 
             if (dbError) throw dbError;
 
+            // 3. Success Feedback
             setSuccess(true);
             setFormData({ title: '', raw_text: '', location: '' });
             setTouched({});
 
+            // Notify parent after delay
             setTimeout(() => {
                 if (onSuccess) onSuccess();
-            }, 2000);
+            }, 2500);
 
         } catch (err) {
             console.error('Submission error:', err);
-            setError(err.message || 'We encountered an error processing your report. Please try again.');
+            setError('Something went wrong. Please try again.');
         } finally {
             setIsSubmitting(false);
         }
@@ -102,14 +110,14 @@ export default function SubmitIncident({ onSuccess }) {
                     <div className="mb-8 p-6 bg-green-50 border-2 border-green-100 rounded-2xl flex items-center gap-4 animate-in zoom-in duration-300">
                         <span className="text-3xl">✅</span>
                         <div>
-                            <p className="text-green-800 font-bold text-lg">Report Submitted Successfully!</p>
+                            <p className="text-green-800 font-bold text-lg">Your report has been submitted and analyzed successfully!</p>
                             <p className="text-green-600">Returning you to the feed...</p>
                         </div>
                     </div>
                 )}
 
                 {error && (
-                    <div className="mb-8 p-6 bg-red-50 border-2 border-red-100 rounded-2xl flex items-start gap-4">
+                    <div className="mb-8 p-6 bg-red-50 border-2 border-red-100 rounded-2xl flex items-start gap-4 animate-in shake duration-500">
                         <span className="text-3xl">⚠️</span>
                         <p className="text-red-700 font-bold text-lg leading-snug">{error}</p>
                     </div>
@@ -123,7 +131,9 @@ export default function SubmitIncident({ onSuccess }) {
                             name="title"
                             type="text"
                             placeholder="e.g., Suspicious text message from Amazon"
-                            className={`w-full bg-slate-50 border-2 px-5 py-4 rounded-2xl outline-none transition-all text-lg font-medium placeholder:text-slate-300 ${touched.title && currentErrors.title ? 'border-red-300 focus:ring-4 focus:ring-red-100' : 'border-slate-100 focus:ring-4 focus:ring-slate-200/50 focus:border-slate-300'
+                            className={`w-full bg-slate-50 border-2 px-5 py-4 rounded-2xl outline-none transition-all text-lg font-medium placeholder:text-slate-300 ${touched.title && currentErrors.title
+                                    ? 'border-red-300 focus:ring-4 focus:ring-red-100'
+                                    : 'border-slate-100 focus:ring-4 focus:ring-slate-200/50 focus:border-slate-300'
                                 }`}
                             value={formData.title}
                             onChange={handleChange}
@@ -139,8 +149,10 @@ export default function SubmitIncident({ onSuccess }) {
                             id="location"
                             name="location"
                             type="text"
-                            placeholder="e.g., Online, Facebook, Oak Avenue Park"
-                            className={`w-full bg-slate-50 border-2 px-5 py-4 rounded-2xl outline-none transition-all text-lg font-medium placeholder:text-slate-300 ${touched.location && currentErrors.location ? 'border-red-300 focus:ring-4 focus:ring-red-100' : 'border-slate-100 focus:ring-4 focus:ring-slate-200/50 focus:border-slate-300'
+                            placeholder="e.g., Oak Avenue Park"
+                            className={`w-full bg-slate-50 border-2 px-5 py-4 rounded-2xl outline-none transition-all text-lg font-medium placeholder:text-slate-300 ${touched.location && currentErrors.location
+                                    ? 'border-red-300 focus:ring-4 focus:ring-red-100'
+                                    : 'border-slate-100 focus:ring-4 focus:ring-slate-200/50 focus:border-slate-300'
                                 }`}
                             value={formData.location}
                             onChange={handleChange}
@@ -157,7 +169,9 @@ export default function SubmitIncident({ onSuccess }) {
                             name="raw_text"
                             rows="6"
                             placeholder="Please provide as much detail as possible. This information is kept private and used only for safety analysis."
-                            className={`w-full bg-slate-50 border-2 px-5 py-4 rounded-2xl outline-none transition-all text-lg font-medium placeholder:text-slate-300 resize-none ${touched.raw_text && currentErrors.raw_text ? 'border-red-300 focus:ring-4 focus:ring-red-100' : 'border-slate-100 focus:ring-4 focus:ring-slate-200/50 focus:border-slate-300'
+                            className={`w-full bg-slate-50 border-2 px-5 py-4 rounded-2xl outline-none transition-all text-lg font-medium placeholder:text-slate-300 resize-none ${touched.raw_text && currentErrors.raw_text
+                                    ? 'border-red-300 focus:ring-4 focus:ring-red-100'
+                                    : 'border-slate-100 focus:ring-4 focus:ring-slate-200/50 focus:border-slate-300'
                                 }`}
                             value={formData.raw_text}
                             onChange={handleChange}
