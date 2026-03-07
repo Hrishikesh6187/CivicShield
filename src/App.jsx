@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import IncidentFeed from './components/IncidentFeed';
 import SubmitIncident from './components/SubmitIncident';
+import Haven from './components/Haven';
 
 function App() {
   const [activeTab, setActiveTab] = useState('feed');
@@ -19,8 +20,8 @@ function App() {
             <button
               onClick={() => setActiveTab('feed')}
               className={`px-6 py-2.5 rounded-full font-bold text-base transition-all border-2 ${activeTab === 'feed'
-                  ? 'bg-white text-slate-800 border-white'
-                  : 'text-white border-transparent hover:bg-slate-700'
+                ? 'bg-white text-slate-800 border-white'
+                : 'text-white border-transparent hover:bg-slate-700'
                 }`}
             >
               View Incidents
@@ -28,11 +29,20 @@ function App() {
             <button
               onClick={() => setActiveTab('submit')}
               className={`px-6 py-2.5 rounded-full font-bold text-base transition-all border-2 ${activeTab === 'submit'
-                  ? 'bg-white text-slate-800 border-white'
-                  : 'text-white border-transparent hover:bg-slate-700'
+                ? 'bg-white text-slate-800 border-white'
+                : 'text-white border-transparent hover:bg-slate-700'
                 }`}
             >
               Report Incident
+            </button>
+            <button
+              onClick={() => setActiveTab('haven')}
+              className={`px-6 py-2.5 rounded-full font-bold text-base transition-all border-2 ${activeTab === 'haven'
+                ? 'bg-white text-slate-800 border-white'
+                : 'text-white border-transparent hover:bg-slate-700'
+                }`}
+            >
+              Ask Haven
             </button>
           </div>
         </div>
@@ -42,12 +52,13 @@ function App() {
       <main className="max-w-7xl mx-auto px-6 py-12">
         <div className="mb-10 text-center">
           <h1 className="text-4xl font-extrabold text-slate-800 mb-2">
-            {activeTab === 'feed' ? 'Community Safety Feed' : 'Submit a Safety Report'}
+            {activeTab === 'feed' ? 'Community Safety Feed' : activeTab === 'submit' ? 'Submit a Safety Report' : 'Your Safety Assistant'}
           </h1>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
             {activeTab === 'feed'
               ? 'Stay informed about local safety incidents and digital wellness updates in your neighborhood.'
-              : 'Provide context for our automated engine to analyze and provide safety recommendations.'}
+              : activeTab === 'submit' ? 'Provide context for our automated engine to analyze and provide safety recommendations.'
+                : 'Our AI assistant is here to help you stay safe online and in your community.'}
           </p>
         </div>
 
@@ -55,6 +66,7 @@ function App() {
         {activeTab === 'submit' && (
           <SubmitIncident onSuccess={() => setActiveTab('feed')} />
         )}
+        {activeTab === 'haven' && <Haven />}
       </main>
 
       {/* Footer */}
@@ -68,10 +80,10 @@ function App() {
             <p className="text-slate-500 text-sm">Building safer communities through digital wellness.</p>
           </div>
 
-          <div className="flex gap-10 text-sm font-semibold text-slate-600">
-            <a href="#" className="hover:text-slate-900 transition-colors">Privacy</a>
-            <a href="#" className="hover:text-slate-900 transition-colors">Terms</a>
-            <a href="#" className="hover:text-slate-900 transition-colors">Help Center</a>
+          <div className="max-w-md text-center md:text-justify">
+            <p className="text-slate-500 text-sm leading-relaxed">
+              Our <strong>AI Analysis Engine</strong> is built for responsible community safety. To protect your privacy, no personal identifiable information is stored on our servers. All analysis is performed on anonymous incident reports to keep your neighborhood safe.
+            </p>
           </div>
 
           <div className="text-slate-400 text-sm">
