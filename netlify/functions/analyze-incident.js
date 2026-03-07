@@ -32,65 +32,58 @@ export const handler = async (event) => {
     try {
         const { title, raw_text, location } = JSON.parse(event.body);
         let result;
-        let geminiSucceeded = false;
+        let groqSucceeded = false;
 
         try {
-            const response = await fetch(
-                `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        contents: [
-                            {
-                                parts: [
-                                    {
-                                        text: `You are a community safety analyst for CivicShield. Analyze this incident report and return ONLY a valid JSON object with no extra text, no markdown, no backticks.
-      
-      Incident Title: ${title}
-      Incident Description: ${raw_text}
-      Location: ${location}
-      
-      Return this exact JSON structure:
-      {
-        "category": "one of: Phishing, Network Security, Physical Threat, Scam, Data Breach, Other",
-        "severity": "one of: Low, Medium, High",
-        "clean_summary": "one calm, neutral sentence summarizing the incident without emotional language",
-        "action_steps": ["step 1", "step 2", "step 3"]
-      }`
-                                    }
-                                ]
-                            }
-                        ],
-                        generationConfig: {
-                            temperature: 0.2
+            const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    model: "llama-3.3-70b-versatile",
+                    messages: [
+                        {
+                            role: "system",
+                            content: "You are a community safety analyst for CivicShield. You only respond with valid JSON objects. No markdown, no backticks, no extra text. Only raw JSON."
+                        },
+                        {
+                            role: "user",
+                            content: `Analyze this incident report and return ONLY a valid JSON object.
+
+Incident Title: ${title}
+Incident Description: ${raw_text}
+Location: ${location}
+
+Return this exact JSON structure:
+{
+  "category": "one of: Phishing, Network Security, Physical Threat, Scam, Data Breach, Other",
+  "severity": "one of: Low, Medium, High",
+  "clean_summary": "one calm, neutral sentence summarizing the incident without emotional language",
+  "action_steps": ["step 1", "step 2", "step 3"]
+}`
                         }
-                    })
-                }
-            );
+                    ],
+                    temperature: 0.2
+                })
+            });
 
             if (!response.ok) {
                 const errorBody = await response.text();
-                console.error(`Gemini API Error: ${response.status} ${response.statusText}`, errorBody);
-                throw new Error(`Gemini API returned an error: ${response.status}`);
+                console.error(`Groq API Error: ${response.status} ${response.statusText}`, errorBody);
+                throw new Error(`Groq API returned an error: ${response.status}`);
             }
 
             const data = await response.json();
-
-            if (!data.candidates || data.candidates.length === 0) {
-                throw new Error("Gemini API returned no candidates");
-            }
-
-            const text = data.candidates[0].content.parts[0].text;
+            const text = data.choices[0].message.content;
             const cleaned = text.replace(/```json|```/g, "").trim();
             result = JSON.parse(cleaned);
-            geminiSucceeded = true;
+            groqSucceeded = true;
         } catch (error) {
-            console.error("Gemini API failed, using fallback:", error);
+            console.error("Groq API failed, using fallback:", error);
             result = ruleFallback(title, raw_text);
-            geminiSucceeded = false;
+            groqSucceeded = false;
         }
 
         return {
@@ -98,7 +91,7 @@ export const handler = async (event) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 ...result,
-                ai_used: geminiSucceeded
+                ai_used: groqSucceeded
             })
         };
     } catch (err) {
