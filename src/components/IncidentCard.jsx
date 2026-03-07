@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
 
 const severityStyles = {
@@ -14,19 +14,23 @@ const statusStyles = {
 };
 
 export default function IncidentCard({ incident, onUpdate }) {
+    const [isExpanded, setIsExpanded] = useState(false);
     const {
         id,
         title,
         category,
         severity,
         clean_summary,
+        raw_text,
+        action_steps,
         location,
         status,
         created_at,
         ai_used,
     } = incident;
 
-    const handleStatusUpdate = async (newStatus) => {
+    const handleStatusUpdate = async (e, newStatus) => {
+        e.stopPropagation(); // Prevent card expansion when clicking buttons
         const { error } = await supabase
             .from('incidents')
             .update({ status: newStatus })
@@ -41,7 +45,11 @@ export default function IncidentCard({ incident, onUpdate }) {
     };
 
     return (
-        <div className="bg-white border border-slate-200 p-8 rounded-2xl transition-all card-shadow flex flex-col h-full">
+        <div
+            onClick={() => setIsExpanded(!isExpanded)}
+            className={`bg-white border border-slate-200 p-8 rounded-2xl transition-all duration-300 cursor-pointer hover:shadow-md flex flex-col h-full ${isExpanded ? 'ring-2 ring-slate-800/10 shadow-lg' : 'shadow-sm'
+                }`}
+        >
             <div className="flex justify-between items-start mb-6 gap-4">
                 <div className="flex-1">
                     <div className="flex flex-wrap items-center gap-2 mb-3">
@@ -61,9 +69,38 @@ export default function IncidentCard({ incident, onUpdate }) {
                 </div>
             </div>
 
-            <p className="text-slate-600 text-lg leading-relaxed mb-8 flex-1">
+            <p className="text-slate-600 text-lg leading-relaxed mb-6">
                 {clean_summary}
             </p>
+
+            {/* Animated Details Section */}
+            <div
+                className={`overflow-hidden transition-all duration-500 ease-in-out ${isExpanded ? 'max-h-[1000px] opacity-100 mb-8' : 'max-h-0 opacity-0'
+                    }`}
+            >
+                <div className="space-y-6 pt-6 border-t border-slate-100">
+                    <div>
+                        <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Full Report</h4>
+                        <p className="text-slate-700 text-lg leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            {raw_text}
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Recommended Actions</h4>
+                        <ul className="space-y-3">
+                            {action_steps && action_steps.map((step, index) => (
+                                <li key={index} className="flex items-start gap-3 text-slate-700 text-lg">
+                                    <span className="flex-shrink-0 w-6 h-6 bg-slate-800 text-white text-xs font-bold rounded-full flex items-center justify-center mt-1">
+                                        {index + 1}
+                                    </span>
+                                    {step}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
             <div className="mt-auto">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-6 border-t border-slate-100 mb-6">
@@ -83,7 +120,7 @@ export default function IncidentCard({ incident, onUpdate }) {
                     <div className="flex gap-2">
                         {status === 'active' && (
                             <button
-                                onClick={() => handleStatusUpdate('investigating')}
+                                onClick={(e) => handleStatusUpdate(e, 'investigating')}
                                 className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-sm font-bold rounded-lg transition-colors shadow-sm"
                             >
                                 Investigate
@@ -91,7 +128,7 @@ export default function IncidentCard({ incident, onUpdate }) {
                         )}
                         {status === 'investigating' && (
                             <button
-                                onClick={() => handleStatusUpdate('resolved')}
+                                onClick={(e) => handleStatusUpdate(e, 'resolved')}
                                 className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-bold rounded-lg transition-colors shadow-sm"
                             >
                                 Mark Resolved
@@ -99,7 +136,7 @@ export default function IncidentCard({ incident, onUpdate }) {
                         )}
                     </div>
 
-                    <div className="text-sm font-bold text-slate-400 italic flex items-center gap-1.5">
+                    <div className="text-sm font-bold text-slate-400 italic flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
                         {ai_used ? (
                             <>
                                 <span className="text-indigo-500">✓</span> AI Analyzed

@@ -24,7 +24,7 @@ function ruleFallback(title, raw_text) {
     };
 }
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
     if (event.httpMethod !== "POST") {
         return { statusCode: 405, body: "Method Not Allowed" };
     }
@@ -32,50 +32,65 @@ exports.handler = async (event) => {
     try {
         const { title, raw_text, location } = JSON.parse(event.body);
         let result;
-        let claudeSucceeded = false;
+        let geminiSucceeded = false;
 
         try {
-            const response = await fetch("https://api.anthropic.com/v1/messages", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "x-api-key": process.env.ANTHROPIC_API_KEY,
-                    "anthropic-version": "2023-06-01"
-                },
-                body: JSON.stringify({
-                    model: "claude-3-5-sonnet-20241022", // Corrected model name based on Anthropic docs
-                    max_tokens: 1000,
-                    messages: [
-                        {
-                            role: "user",
-                            content: `You are a community safety analyst for CivicShield. Analyze this incident report and return ONLY a valid JSON object with no extra text, no markdown, no backticks. 
-
-Incident Title: ${title}
-Incident Description: ${raw_text}
-Location: ${location}
-
-Return this exact JSON structure:
-{
-  "category": "one of: Phishing, Network Security, Physical Threat, Scam, Data Breach, Other",
-  "severity": "one of: Low, Medium, High",
-  "clean_summary": "one calm, neutral sentence summarizing the incident without emotional language",
-  "action_steps": ["step 1", "step 2", "step 3"]
-}`
+            const response = await fetch(
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        contents: [
+                            {
+                                parts: [
+                                    {
+                                        text: `You are a community safety analyst for CivicShield. Analyze this incident report and return ONLY a valid JSON object with no extra text, no markdown, no backticks.
+      
+      Incident Title: ${title}
+      Incident Description: ${raw_text}
+      Location: ${location}
+      
+      Return this exact JSON structure:
+      {
+        "category": "one of: Phishing, Network Security, Physical Threat, Scam, Data Breach, Other",
+        "severity": "one of: Low, Medium, High",
+        "clean_summary": "one calm, neutral sentence summarizing the incident without emotional language",
+        "action_steps": ["step 1", "step 2", "step 3"]
+      }`
+                                    }
+                                ]
+                            }
+                        ],
+                        generationConfig: {
+                            temperature: 0.2
                         }
-                    ]
-                })
-            });
+                    })
+                }
+            );
 
-            if (!response.ok) throw new Error("Claude API returned an error");
+            if (!response.ok) {
+                const errorBody = await response.text();
+                console.error(`Gemini API Error: ${response.status} ${response.statusText}`, errorBody);
+                throw new Error(`Gemini API returned an error: ${response.status}`);
+            }
 
             const data = await response.json();
-            const text = data.content[0].text;
-            result = JSON.parse(text);
-            claudeSucceeded = true;
+
+            if (!data.candidates || data.candidates.length === 0) {
+                throw new Error("Gemini API returned no candidates");
+            }
+
+            const text = data.candidates[0].content.parts[0].text;
+            const cleaned = text.replace(/```json|```/g, "").trim();
+            result = JSON.parse(cleaned);
+            geminiSucceeded = true;
         } catch (error) {
-            console.error("Claude API failed, using fallback:", error);
+            console.error("Gemini API failed, using fallback:", error);
             result = ruleFallback(title, raw_text);
-            claudeSucceeded = false;
+            geminiSucceeded = false;
         }
 
         return {
@@ -83,7 +98,7 @@ Return this exact JSON structure:
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 ...result,
-                ai_used: claudeSucceeded
+                ai_used: geminiSucceeded
             })
         };
     } catch (err) {
