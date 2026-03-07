@@ -1,0 +1,323 @@
+[
+    {
+        "id": "1",
+        "title": "Robocall Impersonating Social Security Administration",
+        "raw_text": "I received an automated call claiming my Social Security number has been suspended due to suspicious activity. The recording said I need to call back immediately or face arrest. My neighbor got the same call yesterday.",
+        "category": "Scam",
+        "severity": "High",
+        "clean_summary": "Robocalls impersonating the Social Security Administration are threatening residents with account suspension and arrest.",
+        "action_steps": [
+            "Do not call back any number provided in the message",
+            "Report the call to the FTC at reportfraud.ftc.gov",
+            "Know that government agencies never call threatening immediate arrest"
+        ],
+        "ai_used": true,
+        "status": "active",
+        "location": "Greer, South Carolina",
+        "created_at": "2026-03-07T08:00:00Z"
+    },
+    {
+        "id": "2",
+        "title": "Fake Microsoft Support Pop-Up Locking Computers",
+        "raw_text": "A scary pop-up appeared on my screen saying my computer has been infected with a virus and I need to call a 1-800 number immediately for Microsoft support. The pop-up made a loud beeping sound and I could not close it.",
+        "category": "Scam",
+        "severity": "High",
+        "clean_summary": "Fake Microsoft support pop-ups are locking browsers and tricking residents into paying for unnecessary technical support.",
+        "action_steps": [
+            "Do not call the number on the screen",
+            "Force close your browser using Task Manager or CMD+Q",
+            "Run a legitimate antivirus scan after closing the pop-up"
+        ],
+        "ai_used": true,
+        "status": "active",
+        "location": "Spartanburg, South Carolina"
+    },
+    {
+        "id": "3",
+        "title": "Neighborhood Ring Camera Footage Leaked Online",
+        "raw_text": "Someone in our NextDoor group posted that footage from several Ring cameras in our neighborhood appeared on a public website without the owners consent. About 15 homes affected.",
+        "category": "Data Breach",
+        "severity": "High",
+        "clean_summary": "Ring camera footage from multiple neighborhood homes has been found publicly accessible online.",
+        "action_steps": [
+            "Log into your Ring account and set all cameras to private immediately",
+            "Enable two-factor authentication on your Ring account",
+            "Review which third party apps have access to your camera feed"
+        ],
+        "ai_used": true,
+        "status": "active",
+        "location": "Greenville, South Carolina"
+    },
+    {
+        "id": "4",
+        "title": "Fake Utility Shutoff Notices Left on Doors",
+        "raw_text": "Printed notices are being left on front doors in our area claiming the gas company will shut off service within 24 hours unless residents call a number and make a payment. The notices look official but the phone number is not the real gas company number.",
+        "category": "Scam",
+        "severity": "High",
+        "clean_summary": "Fraudulent utility shutoff notices are being placed on residential doors demanding immediate payment to a fake phone number.",
+        "action_steps": [
+            "Do not call the number on the notice",
+            "Contact your utility company directly using the number on your bill",
+            "Report the notice to your local police non-emergency line"
+        ],
+        "ai_used": false,
+        "status": "active",
+        "location": "Duncan, South Carolina"
+    },
+    {
+        "id": "5",
+        "title": "Suspicious Drone Flying Over Residential Backyards",
+        "raw_text": "A drone has been flying low over backyards in our neighborhood for the past three evenings around 9pm. It appears to have a camera and hovers for several minutes over each property.",
+        "category": "Physical Threat",
+        "severity": "Medium",
+        "clean_summary": "An unidentified drone with a camera has been repeatedly flying over residential properties in the evening.",
+        "action_steps": [
+            "Document the drone with video if safe to do so",
+            "Note the time and flight pattern each evening",
+            "Report to local police and FAA if behavior continues"
+        ],
+        "ai_used": false,
+        "status": "investigating",
+        "location": "Taylors, South Carolina"
+    },
+    {
+        "id": "6",
+        "title": "QR Code Scam at Local Restaurant Tables",
+        "raw_text": "The QR codes on table menus at a local restaurant were replaced with fake stickers that redirect to a phishing website mimicking the real menu but asking for credit card information to place an order.",
+        "category": "Phishing",
+        "severity": "High",
+        "clean_summary": "Fraudulent QR code stickers have been placed over legitimate restaurant menu codes, redirecting diners to a payment phishing site.",
+        "action_steps": [
+            "Do not enter payment info when scanning a QR code menu",
+            "Inspect QR code stickers for signs of tampering",
+            "Report unauthorized charges to your bank immediately"
+        ],
+        "ai_used": true,
+        "status": "active",
+        "location": "Greenville, South Carolina"
+    },
+    {
+        "id": "7",
+        "title": "Scammers Posing as Charity Collectors After Storm",
+        "raw_text": "People going door to door claiming to collect donations for storm relief victims in the area. They have no official identification and are asking for cash only.",
+        "category": "Scam",
+        "severity": "High",
+        "clean_summary": "Individuals posing as charity collectors are soliciting cash donations door to door following a recent storm.",
+        "action_steps": [
+            "Never give cash to door to door charity solicitors",
+            "Ask for official identification and charity registration number",
+            "Donate directly through verified charity websites instead"
+        ],
+        "ai_used": true,
+        "status": "active",
+        "location": "Greer, South Carolina"
+    },
+    {
+        "id": "8",
+        "title": "Public Library Computer Keylogger Discovered",
+        "raw_text": "A staff member at the public library found a small hardware device plugged into the back of a public computer. They believe it is a keylogger that was recording everything typed including passwords and personal information.",
+        "category": "Network Security",
+        "severity": "High",
+        "clean_summary": "A hardware keylogger was discovered attached to a public library computer, potentially capturing sensitive user input.",
+        "action_steps": [
+            "Avoid using public computers for sensitive accounts",
+            "If you used the library computer recently change your passwords immediately",
+            "Enable two-factor authentication on all important accounts"
+        ],
+        "ai_used": true,
+        "status": "resolved",
+        "location": "Greenville, South Carolina"
+    },
+    {
+        "id": "9",
+        "title": "Fake Amazon Package Redelivery Emails",
+        "raw_text": "Receiving emails claiming an Amazon package could not be delivered and asking me to click a link and pay a small redelivery fee. The email looks exactly like Amazon branding but the sender address is not from amazon.com.",
+        "category": "Phishing",
+        "severity": "Medium",
+        "clean_summary": "Phishing emails impersonating Amazon are circulating, requesting payment to redeliver undelivered packages.",
+        "action_steps": [
+            "Check the sender email address carefully before clicking anything",
+            "Log into Amazon directly to check real order status",
+            "Report the email as phishing in your email client"
+        ],
+        "ai_used": true,
+        "status": "active",
+        "location": "Spartanburg, South Carolina"
+    },
+    {
+        "id": "10",
+        "title": "Unsecured Medical Records Found in Dumpster",
+        "raw_text": "A resident found printed medical records with full names, dates of birth, and medical histories in an open dumpster behind a closed medical clinic. Records appear to belong to dozens of patients.",
+        "category": "Data Breach",
+        "severity": "High",
+        "clean_summary": "Printed patient medical records containing sensitive personal information were found improperly disposed of in a public dumpster.",
+        "action_steps": [
+            "Contact the medical clinic directly to report the exposure",
+            "If your records may be affected monitor your health insurance for fraudulent claims",
+            "File a complaint with the HHS Office for Civil Rights at hhs.gov"
+        ],
+        "ai_used": false,
+        "status": "investigating",
+        "location": "Greenville, South Carolina"
+    },
+    {
+        "id": "11",
+        "title": "Bluetooth Skimmer Found at Grocery Store ATM",
+        "raw_text": "The grocery store manager announced they found a Bluetooth enabled card skimmer inside one of their ATMs. It had been there for an unknown period. Customers who used the ATM in the past two weeks may be affected.",
+        "category": "Scam",
+        "severity": "High",
+        "clean_summary": "A Bluetooth card skimmer was found inside a grocery store ATM, potentially compromising customer payment data.",
+        "action_steps": [
+            "Check your bank statements for any unauthorized transactions",
+            "Contact your bank to request a new card if you used the ATM recently",
+            "Use contactless payment methods when possible to avoid skimmers"
+        ],
+        "ai_used": true,
+        "status": "resolved",
+        "location": "Greer, South Carolina"
+    },
+    {
+        "id": "12",
+        "title": "Fake Job Offer Emails Targeting Recent Graduates",
+        "raw_text": "Several recent college graduates in our area received very convincing job offer emails from fake companies asking for Social Security numbers and bank account details for direct deposit setup before any interview.",
+        "category": "Phishing",
+        "severity": "High",
+        "clean_summary": "Fraudulent job offer emails are targeting recent graduates, soliciting Social Security numbers and bank details under the guise of employment onboarding.",
+        "action_steps": [
+            "Never provide your SSN or bank details before a formal verified job offer",
+            "Research the company independently before responding",
+            "Report the email to the FTC at reportfraud.ftc.gov"
+        ],
+        "ai_used": true,
+        "status": "active",
+        "location": "Spartanburg, South Carolina"
+    },
+    {
+        "id": "13",
+        "title": "Home Security System App Sending Data to Unknown Server",
+        "raw_text": "A tech savvy neighbor monitored his home network traffic and found his home security app was sending data to an IP address in an unknown foreign country even when he was not actively using the app.",
+        "category": "Network Security",
+        "severity": "Medium",
+        "clean_summary": "A home security application was found transmitting data to an unidentified foreign server without user initiation.",
+        "action_steps": [
+            "Check the privacy policy of your security app for data sharing disclosures",
+            "Contact the app developer to request clarification on data transmission",
+            "Consider using a VPN on your home network for additional privacy"
+        ],
+        "ai_used": true,
+        "status": "investigating",
+        "location": "Taylors, South Carolina"
+    },
+    {
+        "id": "14",
+        "title": "Romantic Scam Targeting Widowed Seniors",
+        "raw_text": "A widowed senior in our community lost over $8000 to an online romance scam. The scammer built a relationship over several months on Facebook before asking for money for a medical emergency.",
+        "category": "Scam",
+        "severity": "High",
+        "clean_summary": "An online romance scam targeting widowed seniors has resulted in significant financial losses across multiple victims in the community.",
+        "action_steps": [
+            "Never send money to someone you have not met in person",
+            "Be skeptical of online relationships that progress very quickly",
+            "Report romance scams to the FTC at reportfraud.ftc.gov"
+        ],
+        "ai_used": true,
+        "status": "active",
+        "location": "Greer, South Carolina"
+    },
+    {
+        "id": "15",
+        "title": "School WiFi Network Accessible from Parking Lot",
+        "raw_text": "A parent noticed they could connect to the school internal WiFi network from the parking lot without any password. The network appears to give access to internal school systems which could allow anyone to access student records.",
+        "category": "Network Security",
+        "severity": "High",
+        "clean_summary": "A school internal WiFi network was found to be accessible without authentication from the public parking lot.",
+        "action_steps": [
+            "Report the issue to the school IT department immediately",
+            "Avoid connecting to the network unless authorized",
+            "The school should implement WPA3 encryption and network segmentation"
+        ],
+        "ai_used": false,
+        "status": "investigating",
+        "location": "Duncan, South Carolina"
+    },
+    {
+        "id": "16",
+        "title": "Porch Pirates Stealing Packages Across Neighborhood",
+        "raw_text": "A coordinated group of porch pirates has been hitting our neighborhood every afternoon between 2pm and 4pm. Ring camera footage shows the same two vehicles. Over 20 packages stolen this week alone.",
+        "category": "Physical Threat",
+        "severity": "Medium",
+        "clean_summary": "An organized group of package thieves is systematically targeting residential porches during afternoon hours.",
+        "action_steps": [
+            "Require signature on delivery or use Amazon locker for packages",
+            "Share vehicle descriptions with neighbors via community apps",
+            "Report to police with any camera footage you have captured"
+        ],
+        "ai_used": false,
+        "status": "active",
+        "location": "Greer, South Carolina"
+    },
+    {
+        "id": "17",
+        "title": "Fake Antivirus Software Installed Through Ad Click",
+        "raw_text": "I accidentally clicked an ad on a news website and it automatically started downloading software claiming to be an antivirus. The software keeps showing scary warnings and asking me to pay $89 to clean my computer.",
+        "category": "Scam",
+        "severity": "Medium",
+        "clean_summary": "Malicious software disguised as antivirus protection is being distributed through deceptive online advertisements.",
+        "action_steps": [
+            "Do not pay for the software under any circumstances",
+            "Run a scan using a legitimate free antivirus like Malwarebytes",
+            "Uninstall the fake software through your system settings immediately"
+        ],
+        "ai_used": true,
+        "status": "active",
+        "location": "Greenville, South Carolina"
+    },
+    {
+        "id": "18",
+        "title": "Neighbor Reports Smart Doorbell Hacked",
+        "raw_text": "My neighbor received an alert that someone logged into her Ring doorbell account from a device in another country. The hacker was able to see her live camera feed and speak through the doorbell speaker which frightened her children.",
+        "category": "Network Security",
+        "severity": "High",
+        "clean_summary": "A residential smart doorbell was accessed by an unauthorized user from a foreign location, exposing live camera feed and two-way audio.",
+        "action_steps": [
+            "Change your doorbell account password immediately",
+            "Enable two-factor authentication on the account",
+            "Check all connected devices and remove any you do not recognize"
+        ],
+        "ai_used": true,
+        "status": "resolved",
+        "location": "Spartanburg, South Carolina"
+    },
+    {
+        "id": "19",
+        "title": "Text Message Claiming Jury Duty Fine",
+        "raw_text": "Received a text message saying I missed jury duty and have an outstanding fine of $950 that must be paid within 24 hours through a link or a warrant will be issued for my arrest. Several coworkers got the same text today.",
+        "category": "Scam",
+        "severity": "Medium",
+        "clean_summary": "A smishing campaign is falsely threatening recipients with arrest warrants for missed jury duty unless an immediate fine is paid.",
+        "action_steps": [
+            "Do not click the link or pay any amount",
+            "Know that courts communicate via official mail not text message",
+            "Report the message to the FTC and block the number"
+        ],
+        "ai_used": true,
+        "status": "active",
+        "location": "Greer, South Carolina"
+    },
+    {
+        "id": "20",
+        "title": "Unencrypted Community Center Patient Data Exposed",
+        "raw_text": "The local community health center sent an email to all patients saying a laptop containing unencrypted patient records was stolen from a staff members car. Names, addresses, phone numbers, and appointment histories were on the device.",
+        "category": "Data Breach",
+        "severity": "High",
+        "clean_summary": "A stolen unencrypted laptop from a community health center has exposed patient personal and medical appointment data.",
+        "action_steps": [
+            "Monitor your credit report for any suspicious new accounts",
+            "Be alert for targeted phishing attempts using your personal details",
+            "Contact the health center to confirm what specific data was on the device"
+        ],
+        "ai_used": true,
+        "status": "active",
+        "location": "Greenville, South Carolina"
+    }
+]
