@@ -7,7 +7,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('feed');
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col">
       {/* Navbar */}
       <nav className="bg-slate-800 text-white shadow-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -49,7 +49,7 @@ function App() {
       </nav>
 
       {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto px-6 py-12">
+      <main className="max-w-7xl mx-auto px-6 py-12 flex-1 w-full">
         <div className="mb-10 text-center">
           <h1 className="text-4xl font-extrabold text-slate-800 mb-2">
             {activeTab === 'feed' ? 'Community Safety Feed' : activeTab === 'submit' ? 'Submit a Safety Report' : 'Your Safety Assistant'}
