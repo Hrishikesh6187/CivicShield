@@ -6,10 +6,14 @@ export const handler = async (event) => {
     try {
         const { incidents } = JSON.parse(event.body);
 
+        const filteredIncidents = incidents.filter(i =>
+            i.status === 'active' || i.status === 'investigating'
+        );
+
         const prompt = `You are a community safety analyst for CivicShield. Your job is to filter a list of community incident reports and identify only the ones that are genuinely actionable and worth alerting residents about. Ignore duplicate reports, vague complaints, or low-impact incidents.
 
 Here are the current active incidents:
-${JSON.stringify(incidents.map(i => ({
+${JSON.stringify(filteredIncidents.map(i => ({
             id: i.id,
             title: i.title,
             category: i.category,

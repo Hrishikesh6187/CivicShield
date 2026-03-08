@@ -50,12 +50,16 @@ export default function IncidentFeed() {
     const fetchTopAlerts = async (currentIncidents) => {
         if (!currentIncidents || currentIncidents.length === 0) return;
 
+        const activeIncidents = currentIncidents.filter(i =>
+            i.status === 'active' || i.status === 'investigating'
+        );
+
         setIsFilteringAlerts(true);
         try {
             const response = await fetch('/.netlify/functions/filter-alerts', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ incidents: currentIncidents })
+                body: JSON.stringify({ incidents: activeIncidents })
             });
 
             if (!response.ok) throw new Error('Alert filtering failed');
@@ -253,14 +257,14 @@ export default function IncidentFeed() {
                                 <div
                                     key={alert.id}
                                     className={`relative p-6 rounded-3xl border-l-8 transition-all hover:shadow-lg ${alert.severity === 'High' ? 'border-red-500 bg-red-50/30' :
-                                            alert.severity === 'Medium' ? 'border-amber-400 bg-amber-50/30' :
-                                                'border-emerald-400 bg-emerald-50/30'
+                                        alert.severity === 'Medium' ? 'border-amber-400 bg-amber-50/30' :
+                                            'border-emerald-400 bg-emerald-50/30'
                                         }`}
                                 >
                                     <div className="flex justify-between items-start mb-3">
                                         <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-lg ${alert.severity === 'High' ? 'bg-red-100 text-red-600' :
-                                                alert.severity === 'Medium' ? 'bg-amber-100 text-amber-700' :
-                                                    'bg-emerald-100 text-emerald-700'
+                                            alert.severity === 'Medium' ? 'bg-amber-100 text-amber-700' :
+                                                'bg-emerald-100 text-emerald-700'
                                             }`}>
                                             {alert.category}
                                         </span>
@@ -273,8 +277,8 @@ export default function IncidentFeed() {
                                     </p>
 
                                     <div className={`p-4 rounded-2xl flex items-start gap-3 border shadow-sm ${alert.severity === 'High' ? 'bg-white border-red-100' :
-                                            alert.severity === 'Medium' ? 'bg-white border-amber-100' :
-                                                'bg-white border-emerald-100'
+                                        alert.severity === 'Medium' ? 'bg-white border-amber-100' :
+                                            'bg-white border-emerald-100'
                                         }`}>
                                         <span className="text-xl">⚡</span>
                                         <div>
@@ -289,7 +293,7 @@ export default function IncidentFeed() {
                         <div className="mt-8 text-center">
                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
                                 {alertSource === 'AI'
-                                    ? `AI has filtered ${incidents.length} total incidents to show you what matters most`
+                                    ? `AI has filtered ${incidents.filter(i => i.status === 'active' || i.status === 'investigating').length} active incidents to show you what matters most`
                                     : `System has automatically prioritized the top ${topAlerts.length} reported incidents`}
                             </p>
                         </div>
