@@ -37,7 +37,7 @@ GROQ_API_KEY=your_groq_api_key
 npm install
 netlify dev
 ```
-App runs at `http://localhost:8888`
+App runs at https://civicshieldpan.netlify.app/ 
 
 ### Test Commands
 ```bash
