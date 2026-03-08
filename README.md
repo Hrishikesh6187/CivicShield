@@ -3,6 +3,8 @@
 A community-driven safety platform that uses AI to filter noise, surface 
 actionable alerts, and empower residents to stay informed and safe.
 
+LINK: https://civicshieldpan.netlify.app/
+
 ---
 
 ## Candidate Name
@@ -37,7 +39,7 @@ GROQ_API_KEY=your_groq_api_key
 npm install
 netlify dev
 ```
-App runs at `http://localhost:8888`
+App runs at https://civicshieldpan.netlify.app/ 
 
 ### Test Commands
 ```bash
