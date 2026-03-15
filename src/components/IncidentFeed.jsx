@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import IncidentCard from './IncidentCard';
 
-const categories = ['All', 'Phishing', 'Network Security', 'Scam', 'Data Breach'];
+const categories = ['All', 'Phishing', 'Network Security', 'Physical Threat', 'Scam', 'Data Breach'];
 const severities = ['All', 'High', 'Medium', 'Low'];
 const statuses = ['All', 'active', 'investigating', 'resolved'];
 
