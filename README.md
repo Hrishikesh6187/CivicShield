@@ -4,6 +4,7 @@ A community-driven safety platform that uses AI to filter noise, surface
 actionable alerts, and empower residents to stay informed and safe.
 
 LINK: https://civicshieldpan.netlify.app/
+VIDEO LINK: https://youtu.be/78UcOk9l6_E 
 
 ---
 
